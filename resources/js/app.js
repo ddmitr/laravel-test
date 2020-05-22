@@ -4,12 +4,13 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require('./bootstrap')
 
-window.Vue = require('vue');
+window.Vue = require('vue')
 
 import VueRouter from 'vue-router'
 
+// eslint-disable-next-line no-undef
 Vue.use(VueRouter)
 
 /**
@@ -32,18 +33,19 @@ import App from './components/App'
 import Home from './components/Home'
 
 const router = new VueRouter({
-    mode: 'history',
-    routes: [
-        {
-            path: '/',
-            name: 'home',
-            component: Home
-        }
-    ],
-});
+  mode: 'history',
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: Home
+    }
+  ]
+})
 
+// eslint-disable-next-line
 const app = new Vue({
-    el: '#app',
-    components: { App },
-    router
-});
+  el: '#app',
+  components: { App },
+  router
+})
