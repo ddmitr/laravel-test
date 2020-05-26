@@ -15,6 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::apiResources([
-    'matches' => 'API\MatchController',
-    'matchweeks' => 'API\MatchweekController'
+    'matches' => 'API\MatchController'
 ]);

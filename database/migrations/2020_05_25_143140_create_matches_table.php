@@ -21,8 +21,8 @@ class CreateMatchesTable extends Migration
                 ->constrained('teams');
             $table->tinyInteger('goals_home', false, true);
             $table->tinyInteger('goals_away', false, true);
-            $table->foreignId('winner_id')
-                ->constrained('teams')->nullable();
+            $table->foreignId('winner_id')->default(null)->nullable(true)
+                ->constrained('teams');
             $table->tinyInteger('matchweek', false, true);
             // $table->boolean('is_played');
             $table->timestamps();
