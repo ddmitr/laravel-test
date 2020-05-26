@@ -18,21 +18,20 @@ class MatchController extends Controller
      */
     public function index(Request $request)
     {
+        $total_points = 0;
         $table = [];
         $teams = Team::all();
-        $weekly = Match::where('matchweek', '=', $request->get('matchweek'))->get();
+        $matchweek = $request->get('matchweek');
+        $weekly = Match::where('matchweek', '=', $matchweek)->get();
         foreach ($teams as $team) {
-            $won = Match::where('matchweek', '<=', $request->get('matchweek'))->where('winner_id',
-                $team->id)->count();
-            $drawn = Match::where('matchweek', '<=',
-                $request->get('matchweek'))->whereNull('winner_id')
+            $won = Match::where('matchweek', '<=', $matchweek)->where('winner_id', $team->id)->count();
+            $drawn = Match::where('matchweek', '<=', $matchweek)->whereNull('winner_id')
                 ->where(function ($q) use ($team) {
                     return $q
                         ->where('home_team_id', $team->id)
                         ->orWhere('away_team_id', $team->id);
                 })->count();
-            $lost = Match::where('matchweek', '<=', $request->get('matchweek'))->where('home_team_id',
-                $team->id)->where('winner_id', '<>', $team->id)
+            $lost = Match::where('matchweek', '<=', $matchweek)->where('winner_id', '<>', $team->id)
                 ->where(function ($q) use ($team) {
                     return $q
                         ->where('home_team_id', $team->id)
@@ -40,14 +39,15 @@ class MatchController extends Controller
                 })->count();
             $table[] = [
                 'team' => $team->name,
-                'played' => $request->get('matchweek'),
+                'played' => $matchweek,
                 'won' => $won,
                 'drawn' => $drawn,
                 'lost' => $lost,
                 'points' => $won * 3 + $drawn,
+                'pred' => 10 // TODO:
             ];
         }
-        usort($table, function($a, $b) {
+        usort($table, function ($a, $b) {
             return $a['points'] < $b['points'];
         });
 
@@ -55,7 +55,6 @@ class MatchController extends Controller
             [
                 'table' => $table,
                 'matches' => MatchResource::collection($weekly),
-                'predictions' => []
             ]);
     }
 

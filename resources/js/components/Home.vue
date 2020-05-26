@@ -65,9 +65,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="border px-4 py-2 w-10/12">Chelsea</td>
-              <td class="border px-4 py-2">90%</td>
+            <tr v-for="(row, index) in table" :key="index">
+              <td class="border px-4 py-2 w-10/12">{{ row.team }}</td>
+              <td class="border px-4 py-2">{{ row.pred }}%</td>
             </tr>
           </tbody>
         </table>
@@ -87,7 +87,6 @@ export default {
     }
   },
   mounted() {
-    console.log('Component mounted.')
     this.loadTable()
   },
   methods: {
