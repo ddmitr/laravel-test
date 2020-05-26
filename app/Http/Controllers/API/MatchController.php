@@ -44,9 +44,13 @@ class MatchController extends Controller
                 'drawn' => $drawn,
                 'lost' => $lost,
                 'points' => $won * 3 + $drawn,
-                'pred' => 10 // TODO:
             ];
+            $total_points += $won * 3 + $drawn;
         }
+        foreach ($table as $key => $item) {
+            $table[$key]['pred'] = round($item['points'] * 100 / $total_points);
+        }
+
         usort($table, function ($a, $b) {
             return $a['points'] < $b['points'];
         });
